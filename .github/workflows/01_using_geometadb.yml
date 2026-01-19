@@ -1,0 +1,42 @@
+name: Build Using Geometadb
+
+on:
+  push:
+    paths:
+      - "in_class_exercises/using_geometadb/**"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: r-lib/actions/setup-r@v2
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            bookdown
+
+      - name: Render book
+        working-directory: in_class_exercises/using_geometadb
+        run: |
+          Rscript -e 'bookdown::render_book("index.Rmd")'
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: in_class_exercises/using_geometadb/docs
+
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: exercise_01
+    runs-on: ubuntu-latest
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v1
