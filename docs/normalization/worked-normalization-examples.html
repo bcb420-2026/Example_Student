@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 Worked normalization examples | Normalization (BCB420 Lecture)</title>
+  <meta name="description" content="A short bookdown module introducing normalization for expression data (bulk and single-cell)." />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 Worked normalization examples | Normalization (BCB420 Lecture)" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="A short bookdown module introducing normalization for expression data (bulk and single-cell)." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 Worked normalization examples | Normalization (BCB420 Lecture)" />
+  
+  <meta name="twitter:description" content="A short bookdown module introducing normalization for expression data (bulk and single-cell)." />
+  
+
+<meta name="author" content="Ruth Isserlin" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="normalization-methods.html"/>
+<link rel="next" href="exercises.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">BCB420 Lecture 5</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a>
+<ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#learning-goals"><i class="fa fa-check"></i><b>0.1</b> Learning goals</a></li>
+<li class="chapter" data-level="0.2" data-path="index.html"><a href="index.html#example-datasets"><i class="fa fa-check"></i><b>0.2</b> Example datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="what-is-normalization.html"><a href="what-is-normalization.html"><i class="fa fa-check"></i><b>1</b> What is normalization?</a></li>
+<li class="chapter" data-level="2" data-path="technical-vs-biological-variation.html"><a href="technical-vs-biological-variation.html"><i class="fa fa-check"></i><b>2</b> Technical vs biological variation</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="technical-vs-biological-variation.html"><a href="technical-vs-biological-variation.html#technical-variation"><i class="fa fa-check"></i><b>2.1</b> Technical variation</a></li>
+<li class="chapter" data-level="2.2" data-path="technical-vs-biological-variation.html"><a href="technical-vs-biological-variation.html#biological-variation"><i class="fa fa-check"></i><b>2.2</b> Biological variation</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="visualizing-distributions.html"><a href="visualizing-distributions.html"><i class="fa fa-check"></i><b>3</b> Visualizing distributions</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="visualizing-distributions.html"><a href="visualizing-distributions.html#load-some-data"><i class="fa fa-check"></i><b>3.1</b> load Some data</a></li>
+<li class="chapter" data-level="3.2" data-path="visualizing-distributions.html"><a href="visualizing-distributions.html#boxplots"><i class="fa fa-check"></i><b>3.2</b> Boxplots</a></li>
+<li class="chapter" data-level="3.3" data-path="visualizing-distributions.html"><a href="visualizing-distributions.html#density-plots"><i class="fa fa-check"></i><b>3.3</b> Density plots</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="normalization-methods.html"><a href="normalization-methods.html"><i class="fa fa-check"></i><b>4</b> Normalization methods</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="normalization-methods.html"><a href="normalization-methods.html#library-size-scaling"><i class="fa fa-check"></i><b>4.1</b> Library-size scaling</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="normalization-methods.html"><a href="normalization-methods.html#counts-per-million-cpm"><i class="fa fa-check"></i><b>4.1.1</b> Counts-per-million (CPM)</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="normalization-methods.html"><a href="normalization-methods.html#distribution-based-normalization"><i class="fa fa-check"></i><b>4.2</b> Distribution-based normalization</a></li>
+<li class="chapter" data-level="4.3" data-path="normalization-methods.html"><a href="normalization-methods.html#rna-seq-composition-aware-methods"><i class="fa fa-check"></i><b>4.3</b> RNA-seq composition-aware methods</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="normalization-methods.html"><a href="normalization-methods.html#edger-tmm"><i class="fa fa-check"></i><b>4.3.1</b> edgeR: TMM</a></li>
+<li class="chapter" data-level="4.3.2" data-path="normalization-methods.html"><a href="normalization-methods.html#deseq2-size-factors"><i class="fa fa-check"></i><b>4.3.2</b> DESeq2: size factors</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="normalization-methods.html"><a href="normalization-methods.html#single-cell-note"><i class="fa fa-check"></i><b>4.4</b> Single-cell note</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="worked-normalization-examples.html"><a href="worked-normalization-examples.html"><i class="fa fa-check"></i><b>5</b> Worked normalization examples</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="worked-normalization-examples.html"><a href="worked-normalization-examples.html#setup-download-supplementary-files"><i class="fa fa-check"></i><b>5.1</b> Setup: download supplementary files</a></li>
+<li class="chapter" data-level="5.2" data-path="worked-normalization-examples.html"><a href="worked-normalization-examples.html#load-some-data-1"><i class="fa fa-check"></i><b>5.2</b> load Some data</a></li>
+<li class="chapter" data-level="5.3" data-path="worked-normalization-examples.html"><a href="worked-normalization-examples.html#example-1-gse119732"><i class="fa fa-check"></i><b>5.3</b> Example 1: GSE119732</a></li>
+<li class="chapter" data-level="5.4" data-path="worked-normalization-examples.html"><a href="worked-normalization-examples.html#convert-the-raw-counts-to-counts-per-million-cpm"><i class="fa fa-check"></i><b>5.4</b> Convert the raw counts to Counts per million (CPM)</a></li>
+<li class="chapter" data-level="5.5" data-path="worked-normalization-examples.html"><a href="worked-normalization-examples.html#filter-out-lowly-expressed-genes"><i class="fa fa-check"></i><b>5.5</b> filter out lowly expressed genes</a></li>
+<li class="chapter" data-level="5.6" data-path="worked-normalization-examples.html"><a href="worked-normalization-examples.html#incorporate-a-design-matrix---description-of-the-samples."><i class="fa fa-check"></i><b>5.6</b> Incorporate a design matrix - description of the samples.</a></li>
+<li class="chapter" data-level="5.7" data-path="worked-normalization-examples.html"><a href="worked-normalization-examples.html#normalize-dataset-using-tmm"><i class="fa fa-check"></i><b>5.7</b> Normalize Dataset using TMM</a></li>
+<li class="chapter" data-level="5.8" data-path="worked-normalization-examples.html"><a href="worked-normalization-examples.html#look-at-the-distribution-of-our-samples-in-2d-space"><i class="fa fa-check"></i><b>5.8</b> Look at the distribution of our samples in 2D space</a></li>
+<li class="chapter" data-level="5.9" data-path="worked-normalization-examples.html"><a href="worked-normalization-examples.html#normalize-the-dataset-using-rle"><i class="fa fa-check"></i><b>5.9</b> Normalize the Dataset using RLE</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>6</b> Exercises</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="exercises.html"><a href="exercises.html#exercise-1-httpswww.ncbi.nlm.nih.govgeoqueryacc.cgiaccgse119732"><i class="fa fa-check"></i><b>6.1</b> Exercise 1 — https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE119732</a></li>
+<li class="chapter" data-level="6.2" data-path="exercises.html"><a href="exercises.html#exercise-2-httpswww.ncbi.nlm.nih.govgeoqueryacc.cgiaccgse122380"><i class="fa fa-check"></i><b>6.2</b> Exercise 2 — https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE122380</a></li>
+<li class="chapter" data-level="6.3" data-path="exercises.html"><a href="exercises.html#exercise-3--"><i class="fa fa-check"></i><b>6.3</b> Exercise 3 -</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Normalization (BCB420 Lecture)</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="worked-normalization-examples" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Worked normalization examples<a href="worked-normalization-examples.html#worked-normalization-examples" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>We will demonstrate exploratory normalization steps on the expression datasets.</p>
+<div id="setup-download-supplementary-files" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Setup: download supplementary files<a href="worked-normalization-examples.html#setup-download-supplementary-files" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="load-some-data-1" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> load Some data<a href="worked-normalization-examples.html#load-some-data-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="worked-normalization-examples.html#cb33-1" tabindex="-1"></a><span class="fu">library</span>(GEOquery)</span></code></pre></div>
+<pre><code>## Loading required package: Biobase</code></pre>
+<pre><code>## Loading required package: BiocGenerics</code></pre>
+<pre><code>## Loading required package: generics</code></pre>
+<pre><code>## 
+## Attaching package: &#39;generics&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     as.difftime, as.factor, as.ordered, intersect, is.element, setdiff,
+##     setequal, union</code></pre>
+<pre><code>## 
+## Attaching package: &#39;BiocGenerics&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     IQR, mad, sd, var, xtabs</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     anyDuplicated, aperm, append, as.data.frame, basename, cbind,
+##     colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
+##     get, grep, grepl, is.unsorted, lapply, Map, mapply, match, mget,
+##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+##     rbind, Reduce, rownames, sapply, saveRDS, table, tapply, unique,
+##     unsplit, which.max, which.min</code></pre>
+<pre><code>## Welcome to Bioconductor
+## 
+##     Vignettes contain introductory material; view with
+##     &#39;browseVignettes()&#39;. To cite Bioconductor, see
+##     &#39;citation(&quot;Biobase&quot;)&#39;, and for packages &#39;citation(&quot;pkgname&quot;)&#39;.</code></pre>
+<pre><code>## Setting options(&#39;download.file.method.GEOquery&#39;=&#39;auto&#39;)</code></pre>
+<pre><code>## Setting options(&#39;GEOquery.inmemory.gpl&#39;=FALSE)</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="worked-normalization-examples.html#cb45-1" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb45-2"><a href="worked-normalization-examples.html#cb45-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:Biobase&#39;:
+## 
+##     combine</code></pre>
+<pre><code>## The following objects are masked from &#39;package:BiocGenerics&#39;:
+## 
+##     combine, intersect, setdiff, setequal, union</code></pre>
+<pre><code>## The following object is masked from &#39;package:generics&#39;:
+## 
+##     explain</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="worked-normalization-examples.html#cb52-1" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb52-2"><a href="worked-normalization-examples.html#cb52-2" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(tidyverse)){</span>
+<span id="cb52-3"><a href="worked-normalization-examples.html#cb52-3" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">&quot;tidyvers&quot;</span>,<span class="at">dependencies =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb52-4"><a href="worked-normalization-examples.html#cb52-4" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## Loading required package: tidyverse</code></pre>
+<pre><code>## Error: package or namespace load failed for &#39;tidyverse&#39;:
+##  .onAttach failed in attachNamespace() for &#39;tidyverse&#39;, details:
+##   call: library(pkg, lib.loc = loc, character.only = TRUE, warn.conflicts = FALSE)
+##   error: there is no package called &#39;lubridate&#39;</code></pre>
+<pre><code>## Installing package into &#39;/usr/local/lib/R/site-library&#39;
+## (as &#39;lib&#39; is unspecified)</code></pre>
+<pre><code>## Warning: package &#39;tidyvers&#39; is not available for this version of R
+## 
+## A version of this package for your version of R might be available elsewhere,
+## see the ideas at
+## https://cran.r-project.org/doc/manuals/r-patched/R-admin.html#Installing-packages</code></pre>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="worked-normalization-examples.html#cb57-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb57-2"><a href="worked-normalization-examples.html#cb57-2" tabindex="-1"></a></span>
+<span id="cb57-3"><a href="worked-normalization-examples.html#cb57-3" tabindex="-1"></a>gse <span class="ot">&lt;-</span> <span class="st">&quot;GSE119732&quot;</span></span>
+<span id="cb57-4"><a href="worked-normalization-examples.html#cb57-4" tabindex="-1"></a></span>
+<span id="cb57-5"><a href="worked-normalization-examples.html#cb57-5" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;./supp_functions.R&quot;</span>)</span>
+<span id="cb57-6"><a href="worked-normalization-examples.html#cb57-6" tabindex="-1"></a><span class="fu">fetch_geo_supp</span>(<span class="at">gse =</span> gse)</span></code></pre></div>
+<pre><code>## Using locally cached version of supplementary file(s) GSE119732 found here:
+## data/GSE119732/GSE119732_count_table_RNA_seq.txt.gz</code></pre>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="worked-normalization-examples.html#cb59-1" tabindex="-1"></a>path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">&quot;data&quot;</span>, gse)</span>
+<span id="cb59-2"><a href="worked-normalization-examples.html#cb59-2" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(path, <span class="at">pattern =</span> <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.txt.gz$|</span><span class="sc">\\</span><span class="st">.tsv.gz$|</span><span class="sc">\\</span><span class="st">.csv.gz$&quot;</span>, </span>
+<span id="cb59-3"><a href="worked-normalization-examples.html#cb59-3" tabindex="-1"></a>                    <span class="at">full.names =</span> <span class="cn">TRUE</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>Raw table preview</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="worked-normalization-examples.html#cb60-1" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb60-2"><a href="worked-normalization-examples.html#cb60-2" tabindex="-1"></a></span>
+<span id="cb60-3"><a href="worked-normalization-examples.html#cb60-3" tabindex="-1"></a>safe_read <span class="ot">&lt;-</span> <span class="cf">function</span>(file) {</span>
+<span id="cb60-4"><a href="worked-normalization-examples.html#cb60-4" tabindex="-1"></a>  <span class="co"># First attempt: read as TSV</span></span>
+<span id="cb60-5"><a href="worked-normalization-examples.html#cb60-5" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(</span>
+<span id="cb60-6"><a href="worked-normalization-examples.html#cb60-6" tabindex="-1"></a>    readr<span class="sc">::</span><span class="fu">read_tsv</span>(file, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb60-7"><a href="worked-normalization-examples.html#cb60-7" tabindex="-1"></a>    <span class="at">error =</span> <span class="cf">function</span>(e) <span class="cn">NULL</span>   <span class="co"># catch fatal errors</span></span>
+<span id="cb60-8"><a href="worked-normalization-examples.html#cb60-8" tabindex="-1"></a>  )</span>
+<span id="cb60-9"><a href="worked-normalization-examples.html#cb60-9" tabindex="-1"></a>  </span>
+<span id="cb60-10"><a href="worked-normalization-examples.html#cb60-10" tabindex="-1"></a>  <span class="co"># If read_tsv failed entirely:</span></span>
+<span id="cb60-11"><a href="worked-normalization-examples.html#cb60-11" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(df)) {</span>
+<span id="cb60-12"><a href="worked-normalization-examples.html#cb60-12" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">&quot;TSV read failed — reading as space-delimited file instead.&quot;</span>)</span>
+<span id="cb60-13"><a href="worked-normalization-examples.html#cb60-13" tabindex="-1"></a>    <span class="fu">return</span>(readr<span class="sc">::</span><span class="fu">read_table</span>(file, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb60-14"><a href="worked-normalization-examples.html#cb60-14" tabindex="-1"></a>  }</span>
+<span id="cb60-15"><a href="worked-normalization-examples.html#cb60-15" tabindex="-1"></a>  </span>
+<span id="cb60-16"><a href="worked-normalization-examples.html#cb60-16" tabindex="-1"></a>  <span class="co"># If read_tsv returned but with parsing issues:</span></span>
+<span id="cb60-17"><a href="worked-normalization-examples.html#cb60-17" tabindex="-1"></a>  probs <span class="ot">&lt;-</span> <span class="fu">problems</span>(df)</span>
+<span id="cb60-18"><a href="worked-normalization-examples.html#cb60-18" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">nrow</span>(probs) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb60-19"><a href="worked-normalization-examples.html#cb60-19" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">&quot;Parsing issues detected in TSV — reading as space-delimited file instead.&quot;</span>)</span>
+<span id="cb60-20"><a href="worked-normalization-examples.html#cb60-20" tabindex="-1"></a>    <span class="fu">return</span>(readr<span class="sc">::</span><span class="fu">read_table</span>(file, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb60-21"><a href="worked-normalization-examples.html#cb60-21" tabindex="-1"></a>  }</span>
+<span id="cb60-22"><a href="worked-normalization-examples.html#cb60-22" tabindex="-1"></a>  </span>
+<span id="cb60-23"><a href="worked-normalization-examples.html#cb60-23" tabindex="-1"></a>  <span class="co"># If everything was fine:</span></span>
+<span id="cb60-24"><a href="worked-normalization-examples.html#cb60-24" tabindex="-1"></a>  <span class="fu">return</span>(df)</span>
+<span id="cb60-25"><a href="worked-normalization-examples.html#cb60-25" tabindex="-1"></a>}</span>
+<span id="cb60-26"><a href="worked-normalization-examples.html#cb60-26" tabindex="-1"></a></span>
+<span id="cb60-27"><a href="worked-normalization-examples.html#cb60-27" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">safe_read</span>(files[<span class="dv">1</span>])</span>
+<span id="cb60-28"><a href="worked-normalization-examples.html#cb60-28" tabindex="-1"></a></span>
+<span id="cb60-29"><a href="worked-normalization-examples.html#cb60-29" tabindex="-1"></a></span>
+<span id="cb60-30"><a href="worked-normalization-examples.html#cb60-30" tabindex="-1"></a><span class="fu">kable_head</span>(x[, <span class="dv">1</span><span class="sc">:</span><span class="fu">min</span>(<span class="dv">6</span>, <span class="fu">ncol</span>(x))], <span class="dv">5</span>, <span class="fu">paste</span>(gse,<span class="st">&quot;: raw table preview&quot;</span>))</span></code></pre></div>
+<table>
+<caption>(#tab:preview_raw)GSE119732 : raw table preview</caption>
+<thead>
+<tr class="header">
+<th align="left">gene_id</th>
+<th align="right">A1</th>
+<th align="right">A2</th>
+<th align="right">A3</th>
+<th align="right">A4</th>
+<th align="right">B1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ENSG00000223972.5</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">ENSG00000227232.5</td>
+<td align="right">79</td>
+<td align="right">119</td>
+<td align="right">84</td>
+<td align="right">50</td>
+<td align="right">80</td>
+</tr>
+<tr class="odd">
+<td align="left">ENSG00000278267.1</td>
+<td align="right">17</td>
+<td align="right">10</td>
+<td align="right">22</td>
+<td align="right">19</td>
+<td align="right">19</td>
+</tr>
+<tr class="even">
+<td align="left">ENSG00000243485.4</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">ENSG00000237613.2</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="example-1-gse119732" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Example 1: GSE119732<a href="worked-normalization-examples.html#example-1-gse119732" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Before doing anything to this data. What does it look like?</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="worked-normalization-examples.html#cb61-1" tabindex="-1"></a><span class="fu">plot_box</span>(x[,<span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(x)])</span></code></pre></div>
+<p><img src="05-worked-examples_files/figure-html/unnamed-chunk-1-1.png" alt="" width="672" /></p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="worked-normalization-examples.html#cb62-1" tabindex="-1"></a><span class="fu">plot_density</span>(x[,<span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(x)])</span></code></pre></div>
+<p><img src="05-worked-examples_files/figure-html/unnamed-chunk-2-1.png" alt="" width="672" /></p>
+</div>
+<div id="convert-the-raw-counts-to-counts-per-million-cpm" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Convert the raw counts to Counts per million (CPM)<a href="worked-normalization-examples.html#convert-the-raw-counts-to-counts-per-million-cpm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="worked-normalization-examples.html#cb63-1" tabindex="-1"></a><span class="fu">library</span>(edgeR)</span></code></pre></div>
+<pre><code>## Loading required package: limma</code></pre>
+<pre><code>## 
+## Attaching package: &#39;limma&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:BiocGenerics&#39;:
+## 
+##     plotMA</code></pre>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="worked-normalization-examples.html#cb67-1" tabindex="-1"></a>x_cpm <span class="ot">&lt;-</span> <span class="fu">cpm</span>(<span class="at">y =</span> x[,<span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(x)])</span>
+<span id="cb67-2"><a href="worked-normalization-examples.html#cb67-2" tabindex="-1"></a></span>
+<span id="cb67-3"><a href="worked-normalization-examples.html#cb67-3" tabindex="-1"></a><span class="fu">plot_box</span>(x_cpm,<span class="at">main =</span> <span class="st">&quot;CPM - all genes&quot;</span>)</span></code></pre></div>
+<p><img src="05-worked-examples_files/figure-html/unnamed-chunk-3-1.png" alt="" width="672" /></p>
+<p>Visualize as a density plot as well</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="worked-normalization-examples.html#cb68-1" tabindex="-1"></a><span class="fu">plot_density</span>(x_cpm,<span class="at">main =</span> <span class="st">&quot;CPM - all genes, NO design&quot;</span>)</span></code></pre></div>
+<p><img src="05-worked-examples_files/figure-html/unnamed-chunk-4-1.png" alt="" width="672" /></p>
+<p>There are a lot of genes that have zero expression. That is the majority of them. So we need to get rid of them.</p>
+</div>
+<div id="filter-out-lowly-expressed-genes" class="section level2 hasAnchor" number="5.5">
+<h2><span class="header-section-number">5.5</span> filter out lowly expressed genes<a href="worked-normalization-examples.html#filter-out-lowly-expressed-genes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="worked-normalization-examples.html#cb69-1" tabindex="-1"></a>to_remove <span class="ot">&lt;-</span> edgeR<span class="sc">::</span><span class="fu">filterByExpr</span>(x_cpm,<span class="at">min.count =</span> <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## No group or design set. Assuming all samples belong to one group.</code></pre>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="worked-normalization-examples.html#cb71-1" tabindex="-1"></a>x_cpm_filtered <span class="ot">&lt;-</span> x_cpm[to_remove,]</span>
+<span id="cb71-2"><a href="worked-normalization-examples.html#cb71-2" tabindex="-1"></a></span>
+<span id="cb71-3"><a href="worked-normalization-examples.html#cb71-3" tabindex="-1"></a><span class="fu">plot_box</span>(x_cpm_filtered,<span class="at">main =</span> <span class="st">&quot;CPM filtered out lowly expressed - </span><span class="sc">\n</span><span class="st">NO design matrix&quot;</span>)</span></code></pre></div>
+<p><img src="05-worked-examples_files/figure-html/unnamed-chunk-5-1.png" alt="" width="672" /></p>
+<p>visualize this as density plot as well.</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="worked-normalization-examples.html#cb72-1" tabindex="-1"></a><span class="fu">plot_density</span>(x_cpm_filtered,<span class="at">main =</span> <span class="st">&quot;CPM filtered out lowly expressed - </span><span class="sc">\n</span><span class="st"> - NO design matrix&quot;</span>)</span></code></pre></div>
+<p><img src="05-worked-examples_files/figure-html/unnamed-chunk-6-1.png" alt="" width="672" /></p>
+</div>
+<div id="incorporate-a-design-matrix---description-of-the-samples." class="section level2 hasAnchor" number="5.6">
+<h2><span class="header-section-number">5.6</span> Incorporate a design matrix - description of the samples.<a href="worked-normalization-examples.html#incorporate-a-design-matrix---description-of-the-samples." class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The above was usingn all of the samples the same but this dataset has varying sample types. I might be hard to figure it out just from column names as they are not so informative but let’s just guess</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="worked-normalization-examples.html#cb73-1" tabindex="-1"></a><span class="fu">colnames</span>(x)</span></code></pre></div>
+<pre><code>##  [1] &quot;gene_id&quot; &quot;A1&quot;      &quot;A2&quot;      &quot;A3&quot;      &quot;A4&quot;      &quot;B1&quot;      &quot;B2&quot;     
+##  [8] &quot;B3&quot;      &quot;B4&quot;      &quot;B5&quot;      &quot;C1&quot;      &quot;C2&quot;      &quot;C3&quot;      &quot;C4&quot;     
+## [15] &quot;C5&quot;      &quot;D1&quot;      &quot;D2&quot;      &quot;D3&quot;      &quot;D4&quot;      &quot;D5&quot;      &quot;E1&quot;     
+## [22] &quot;E2&quot;      &quot;E3&quot;      &quot;E4&quot;      &quot;E5&quot;      &quot;F1&quot;      &quot;F2&quot;      &quot;F3&quot;     
+## [29] &quot;F4&quot;      &quot;F5&quot;</code></pre>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="worked-normalization-examples.html#cb75-1" tabindex="-1"></a><span class="co">#design matrix - </span></span>
+<span id="cb75-2"><a href="worked-normalization-examples.html#cb75-2" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">colnames</span>(x)[<span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(x)]</span>
+<span id="cb75-3"><a href="worked-normalization-examples.html#cb75-3" tabindex="-1"></a>patient  <span class="ot">&lt;-</span> <span class="fu">substr</span>(samples, <span class="dv">1</span>, <span class="dv">1</span>)       </span>
+<span id="cb75-4"><a href="worked-normalization-examples.html#cb75-4" tabindex="-1"></a>celltype <span class="ot">&lt;-</span> <span class="fu">substr</span>(samples, <span class="dv">2</span>, <span class="fu">nchar</span>(samples))   </span>
+<span id="cb75-5"><a href="worked-normalization-examples.html#cb75-5" tabindex="-1"></a>sample_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(samples, patient, celltype)</span>
+<span id="cb75-6"><a href="worked-normalization-examples.html#cb75-6" tabindex="-1"></a></span>
+<span id="cb75-7"><a href="worked-normalization-examples.html#cb75-7" tabindex="-1"></a></span>
+<span id="cb75-8"><a href="worked-normalization-examples.html#cb75-8" tabindex="-1"></a>design <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> celltype,<span class="at">data =</span> sample_data)</span>
+<span id="cb75-9"><a href="worked-normalization-examples.html#cb75-9" tabindex="-1"></a><span class="fu">rownames</span>(design) <span class="ot">&lt;-</span> sample_data<span class="sc">$</span>samples</span>
+<span id="cb75-10"><a href="worked-normalization-examples.html#cb75-10" tabindex="-1"></a><span class="fu">colnames</span>(design) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;celltype&quot;</span>, <span class="fu">levels</span>(<span class="fu">factor</span>(celltype)))</span>
+<span id="cb75-11"><a href="worked-normalization-examples.html#cb75-11" tabindex="-1"></a>design</span></code></pre></div>
+<pre><code>##    celltype1 celltype2 celltype3 celltype4 celltype5
+## A1         1         0         0         0         0
+## A2         0         1         0         0         0
+## A3         0         0         1         0         0
+## A4         0         0         0         1         0
+## B1         1         0         0         0         0
+## B2         0         1         0         0         0
+## B3         0         0         1         0         0
+## B4         0         0         0         1         0
+## B5         0         0         0         0         1
+## C1         1         0         0         0         0
+## C2         0         1         0         0         0
+## C3         0         0         1         0         0
+## C4         0         0         0         1         0
+## C5         0         0         0         0         1
+## D1         1         0         0         0         0
+## D2         0         1         0         0         0
+## D3         0         0         1         0         0
+## D4         0         0         0         1         0
+## D5         0         0         0         0         1
+## E1         1         0         0         0         0
+## E2         0         1         0         0         0
+## E3         0         0         1         0         0
+## E4         0         0         0         1         0
+## E5         0         0         0         0         1
+## F1         1         0         0         0         0
+## F2         0         1         0         0         0
+## F3         0         0         1         0         0
+## F4         0         0         0         1         0
+## F5         0         0         0         0         1
+## attr(,&quot;assign&quot;)
+## [1] 1 1 1 1 1
+## attr(,&quot;contrasts&quot;)
+## attr(,&quot;contrasts&quot;)$celltype
+## [1] &quot;contr.treatment&quot;</code></pre>
+<p>Filter use design information</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="worked-normalization-examples.html#cb77-1" tabindex="-1"></a>to_remove_withdesign <span class="ot">&lt;-</span> edgeR<span class="sc">::</span><span class="fu">filterByExpr</span>(x_cpm,<span class="at">min.count =</span> <span class="dv">3</span>,</span>
+<span id="cb77-2"><a href="worked-normalization-examples.html#cb77-2" tabindex="-1"></a>                                            <span class="at">design =</span> design)</span>
+<span id="cb77-3"><a href="worked-normalization-examples.html#cb77-3" tabindex="-1"></a>x_cpm_filtered_withdesign <span class="ot">&lt;-</span> x_cpm[to_remove_withdesign,]</span>
+<span id="cb77-4"><a href="worked-normalization-examples.html#cb77-4" tabindex="-1"></a></span>
+<span id="cb77-5"><a href="worked-normalization-examples.html#cb77-5" tabindex="-1"></a><span class="fu">plot_box</span>(x_cpm_filtered_withdesign,<span class="at">main =</span> <span class="st">&quot;CPM filtered out lowly expressed - </span><span class="sc">\n</span><span class="st"> - with design matrix&quot;</span>)</span></code></pre></div>
+<p><img src="05-worked-examples_files/figure-html/unnamed-chunk-9-1.png" alt="" width="672" /></p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="worked-normalization-examples.html#cb78-1" tabindex="-1"></a><span class="fu">plot_density</span>(x_cpm_filtered_withdesign,<span class="at">main =</span> <span class="st">&quot;CPM filtered out lowly expressed - </span><span class="sc">\n</span><span class="st"> - with design matrix&quot;</span>)</span></code></pre></div>
+<p><img src="05-worked-examples_files/figure-html/unnamed-chunk-10-1.png" alt="" width="672" /></p>
+</div>
+<div id="normalize-dataset-using-tmm" class="section level2 hasAnchor" number="5.7">
+<h2><span class="header-section-number">5.7</span> Normalize Dataset using TMM<a href="worked-normalization-examples.html#normalize-dataset-using-tmm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="worked-normalization-examples.html#cb79-1" tabindex="-1"></a><span class="fu">library</span>(edgeR)</span>
+<span id="cb79-2"><a href="worked-normalization-examples.html#cb79-2" tabindex="-1"></a></span>
+<span id="cb79-3"><a href="worked-normalization-examples.html#cb79-3" tabindex="-1"></a>dge <span class="ot">&lt;-</span> <span class="fu">DGEList</span>(<span class="at">counts =</span> x[,<span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(x)])</span>
+<span id="cb79-4"><a href="worked-normalization-examples.html#cb79-4" tabindex="-1"></a>dge_filtered <span class="ot">&lt;-</span> dge[<span class="fu">filterByExpr</span>(dge),]</span></code></pre></div>
+<pre><code>## Warning in filterByExpr.DGEList(dge): All samples appear to belong to the same
+## group.</code></pre>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="worked-normalization-examples.html#cb81-1" tabindex="-1"></a>dge_filtered  <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(dge_filtered , <span class="at">method =</span> <span class="st">&quot;TMM&quot;</span>)</span>
+<span id="cb81-2"><a href="worked-normalization-examples.html#cb81-2" tabindex="-1"></a>norm_cpm <span class="ot">&lt;-</span> <span class="fu">cpm</span>(dge_filtered , <span class="at">log =</span> <span class="cn">FALSE</span>, <span class="at">prior.count =</span> <span class="dv">1</span>)</span>
+<span id="cb81-3"><a href="worked-normalization-examples.html#cb81-3" tabindex="-1"></a></span>
+<span id="cb81-4"><a href="worked-normalization-examples.html#cb81-4" tabindex="-1"></a><span class="fu">plot_box</span>(norm_cpm)</span></code></pre></div>
+<p><img src="05-worked-examples_files/figure-html/unnamed-chunk-11-1.png" alt="" width="672" /></p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="worked-normalization-examples.html#cb82-1" tabindex="-1"></a><span class="fu">plot_density</span>(norm_cpm)</span></code></pre></div>
+<p><img src="05-worked-examples_files/figure-html/unnamed-chunk-11-2.png" alt="" width="672" /></p>
+</div>
+<div id="look-at-the-distribution-of-our-samples-in-2d-space" class="section level2 hasAnchor" number="5.8">
+<h2><span class="header-section-number">5.8</span> Look at the distribution of our samples in 2D space<a href="worked-normalization-examples.html#look-at-the-distribution-of-our-samples-in-2d-space" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="worked-normalization-examples.html#cb83-1" tabindex="-1"></a>y <span class="ot">&lt;-</span> dge_filtered</span>
+<span id="cb83-2"><a href="worked-normalization-examples.html#cb83-2" tabindex="-1"></a></span>
+<span id="cb83-3"><a href="worked-normalization-examples.html#cb83-3" tabindex="-1"></a><span class="fu">plotMDS</span>(y, <span class="at">top =</span> <span class="dv">500</span>, <span class="at">labels =</span> <span class="fu">colnames</span>(y), </span>
+<span id="cb83-4"><a href="worked-normalization-examples.html#cb83-4" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">as.integer</span>(y<span class="sc">$</span>samples<span class="sc">$</span>group))</span>
+<span id="cb83-5"><a href="worked-normalization-examples.html#cb83-5" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="at">legend =</span> <span class="fu">levels</span>(y<span class="sc">$</span>samples<span class="sc">$</span>group),</span>
+<span id="cb83-6"><a href="worked-normalization-examples.html#cb83-6" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">seq_along</span>(<span class="fu">levels</span>(y<span class="sc">$</span>samples<span class="sc">$</span>group)), <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>)</span></code></pre></div>
+<p><img src="05-worked-examples_files/figure-html/unnamed-chunk-12-1.png" alt="" width="672" /></p>
+<p>Now incorporate the design into the process</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="worked-normalization-examples.html#cb84-1" tabindex="-1"></a>dge <span class="ot">&lt;-</span> <span class="fu">DGEList</span>(<span class="at">counts =</span> x[,<span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(x)],<span class="at">group =</span> sample_data<span class="sc">$</span>celltype)</span>
+<span id="cb84-2"><a href="worked-normalization-examples.html#cb84-2" tabindex="-1"></a>dge_filtered <span class="ot">&lt;-</span> dge[<span class="fu">filterByExpr</span>(dge),]</span>
+<span id="cb84-3"><a href="worked-normalization-examples.html#cb84-3" tabindex="-1"></a>dge_filtered  <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(dge_filtered , <span class="at">method =</span> <span class="st">&quot;TMM&quot;</span>)</span>
+<span id="cb84-4"><a href="worked-normalization-examples.html#cb84-4" tabindex="-1"></a>norm_cpm <span class="ot">&lt;-</span> <span class="fu">cpm</span>(dge_filtered , <span class="at">log =</span> <span class="cn">FALSE</span>, <span class="at">prior.count =</span> <span class="dv">1</span>)</span>
+<span id="cb84-5"><a href="worked-normalization-examples.html#cb84-5" tabindex="-1"></a></span>
+<span id="cb84-6"><a href="worked-normalization-examples.html#cb84-6" tabindex="-1"></a><span class="fu">plot_box</span>(norm_cpm)</span></code></pre></div>
+<p><img src="05-worked-examples_files/figure-html/unnamed-chunk-13-1.png" alt="" width="672" /></p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="worked-normalization-examples.html#cb85-1" tabindex="-1"></a><span class="fu">plot_density</span>(norm_cpm)</span></code></pre></div>
+<p><img src="05-worked-examples_files/figure-html/unnamed-chunk-13-2.png" alt="" width="672" /></p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="worked-normalization-examples.html#cb86-1" tabindex="-1"></a>y <span class="ot">&lt;-</span> dge_filtered</span>
+<span id="cb86-2"><a href="worked-normalization-examples.html#cb86-2" tabindex="-1"></a></span>
+<span id="cb86-3"><a href="worked-normalization-examples.html#cb86-3" tabindex="-1"></a><span class="fu">plotMDS</span>(y, <span class="at">top =</span> <span class="dv">500</span>, <span class="at">labels =</span> <span class="fu">colnames</span>(y), </span>
+<span id="cb86-4"><a href="worked-normalization-examples.html#cb86-4" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">as.integer</span>(y<span class="sc">$</span>samples<span class="sc">$</span>group))</span>
+<span id="cb86-5"><a href="worked-normalization-examples.html#cb86-5" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="at">legend =</span> <span class="fu">levels</span>(y<span class="sc">$</span>samples<span class="sc">$</span>group),</span>
+<span id="cb86-6"><a href="worked-normalization-examples.html#cb86-6" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">seq_along</span>(<span class="fu">levels</span>(y<span class="sc">$</span>samples<span class="sc">$</span>group)), <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>)</span></code></pre></div>
+<p><img src="05-worked-examples_files/figure-html/unnamed-chunk-14-1.png" alt="" width="672" /></p>
+<p>Now incorporate the design into the process</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="worked-normalization-examples.html#cb87-1" tabindex="-1"></a>dge <span class="ot">&lt;-</span> <span class="fu">DGEList</span>(<span class="at">counts =</span> x[,<span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(x)],<span class="at">group =</span> sample_data<span class="sc">$</span>patient)</span>
+<span id="cb87-2"><a href="worked-normalization-examples.html#cb87-2" tabindex="-1"></a>dge_filtered <span class="ot">&lt;-</span> dge[<span class="fu">filterByExpr</span>(dge),]</span>
+<span id="cb87-3"><a href="worked-normalization-examples.html#cb87-3" tabindex="-1"></a>dge_filtered  <span class="ot">&lt;-</span> <span class="fu">calcNormFactors</span>(dge_filtered , <span class="at">method =</span> <span class="st">&quot;TMM&quot;</span>)</span>
+<span id="cb87-4"><a href="worked-normalization-examples.html#cb87-4" tabindex="-1"></a>norm_cpm <span class="ot">&lt;-</span> <span class="fu">cpm</span>(dge_filtered , <span class="at">log =</span> <span class="cn">FALSE</span>, <span class="at">prior.count =</span> <span class="dv">1</span>)</span>
+<span id="cb87-5"><a href="worked-normalization-examples.html#cb87-5" tabindex="-1"></a></span>
+<span id="cb87-6"><a href="worked-normalization-examples.html#cb87-6" tabindex="-1"></a><span class="fu">plot_box</span>(norm_cpm)</span></code></pre></div>
+<p><img src="05-worked-examples_files/figure-html/unnamed-chunk-15-1.png" alt="" width="672" /></p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="worked-normalization-examples.html#cb88-1" tabindex="-1"></a><span class="fu">plot_density</span>(norm_cpm)</span></code></pre></div>
+<p><img src="05-worked-examples_files/figure-html/unnamed-chunk-15-2.png" alt="" width="672" /></p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="worked-normalization-examples.html#cb89-1" tabindex="-1"></a>y <span class="ot">&lt;-</span> dge_filtered</span>
+<span id="cb89-2"><a href="worked-normalization-examples.html#cb89-2" tabindex="-1"></a></span>
+<span id="cb89-3"><a href="worked-normalization-examples.html#cb89-3" tabindex="-1"></a><span class="fu">plotMDS</span>(y, <span class="at">top =</span> <span class="dv">500</span>, <span class="at">labels =</span> <span class="fu">colnames</span>(y), </span>
+<span id="cb89-4"><a href="worked-normalization-examples.html#cb89-4" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">as.integer</span>(y<span class="sc">$</span>samples<span class="sc">$</span>group))</span>
+<span id="cb89-5"><a href="worked-normalization-examples.html#cb89-5" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="at">legend =</span> <span class="fu">levels</span>(y<span class="sc">$</span>samples<span class="sc">$</span>group),</span>
+<span id="cb89-6"><a href="worked-normalization-examples.html#cb89-6" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">seq_along</span>(<span class="fu">levels</span>(y<span class="sc">$</span>samples<span class="sc">$</span>group)), <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>)</span></code></pre></div>
+<p><img src="05-worked-examples_files/figure-html/unnamed-chunk-16-1.png" alt="" width="672" /></p>
+</div>
+<div id="normalize-the-dataset-using-rle" class="section level2 hasAnchor" number="5.9">
+<h2><span class="header-section-number">5.9</span> Normalize the Dataset using RLE<a href="worked-normalization-examples.html#normalize-the-dataset-using-rle" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="worked-normalization-examples.html#cb90-1" tabindex="-1"></a><span class="fu">library</span>(DESeq2)</span></code></pre></div>
+<pre><code>## Loading required package: S4Vectors</code></pre>
+<pre><code>## Loading required package: stats4</code></pre>
+<pre><code>## 
+## Attaching package: &#39;S4Vectors&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:tidyr&#39;:
+## 
+##     expand</code></pre>
+<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
+## 
+##     first, rename</code></pre>
+<pre><code>## The following object is masked from &#39;package:utils&#39;:
+## 
+##     findMatches</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     expand.grid, I, unname</code></pre>
+<pre><code>## Loading required package: IRanges</code></pre>
+<pre><code>## 
+## Attaching package: &#39;IRanges&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     reduce</code></pre>
+<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
+## 
+##     collapse, desc, slice</code></pre>
+<pre><code>## Loading required package: GenomicRanges</code></pre>
+<pre><code>## Loading required package: GenomeInfoDb</code></pre>
+<pre><code>## Loading required package: SummarizedExperiment</code></pre>
+<pre><code>## Loading required package: MatrixGenerics</code></pre>
+<pre><code>## Loading required package: matrixStats</code></pre>
+<pre><code>## 
+## Attaching package: &#39;matrixStats&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     count</code></pre>
+<pre><code>## The following objects are masked from &#39;package:Biobase&#39;:
+## 
+##     anyMissing, rowMedians</code></pre>
+<pre><code>## 
+## Attaching package: &#39;MatrixGenerics&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:matrixStats&#39;:
+## 
+##     colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,
+##     colCounts, colCummaxs, colCummins, colCumprods, colCumsums,
+##     colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,
+##     colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,
+##     colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,
+##     colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,
+##     colWeightedMeans, colWeightedMedians, colWeightedSds,
+##     colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,
+##     rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,
+##     rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,
+##     rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,
+##     rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,
+##     rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,
+##     rowWeightedMads, rowWeightedMeans, rowWeightedMedians,
+##     rowWeightedSds, rowWeightedVars</code></pre>
+<pre><code>## The following object is masked from &#39;package:Biobase&#39;:
+## 
+##     rowMedians</code></pre>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="worked-normalization-examples.html#cb113-1" tabindex="-1"></a>counts <span class="ot">&lt;-</span> x[,<span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(x)]</span>
+<span id="cb113-2"><a href="worked-normalization-examples.html#cb113-2" tabindex="-1"></a></span>
+<span id="cb113-3"><a href="worked-normalization-examples.html#cb113-3" tabindex="-1"></a>keep <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(counts <span class="sc">&gt;=</span> <span class="dv">10</span>) <span class="sc">&gt;=</span> <span class="dv">2</span></span>
+<span id="cb113-4"><a href="worked-normalization-examples.html#cb113-4" tabindex="-1"></a>counts_filtered <span class="ot">&lt;-</span> counts[keep, ]</span>
+<span id="cb113-5"><a href="worked-normalization-examples.html#cb113-5" tabindex="-1"></a></span>
+<span id="cb113-6"><a href="worked-normalization-examples.html#cb113-6" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeqDataSetFromMatrix</span>(<span class="at">countData =</span> counts_filtered, </span>
+<span id="cb113-7"><a href="worked-normalization-examples.html#cb113-7" tabindex="-1"></a>                              <span class="at">colData =</span> sample_data,</span>
+<span id="cb113-8"><a href="worked-normalization-examples.html#cb113-8" tabindex="-1"></a>                              <span class="at">design =</span> design)</span></code></pre></div>
+<pre><code>## converting counts to integer mode</code></pre>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="worked-normalization-examples.html#cb115-1" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">estimateSizeFactors</span>(dds)</span>
+<span id="cb115-2"><a href="worked-normalization-examples.html#cb115-2" tabindex="-1"></a></span>
+<span id="cb115-3"><a href="worked-normalization-examples.html#cb115-3" tabindex="-1"></a>norm_counts <span class="ot">&lt;-</span> <span class="fu">counts</span>(dds, <span class="at">normalized =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb115-4"><a href="worked-normalization-examples.html#cb115-4" tabindex="-1"></a></span>
+<span id="cb115-5"><a href="worked-normalization-examples.html#cb115-5" tabindex="-1"></a><span class="fu">plot_box</span>(norm_counts)</span></code></pre></div>
+<p><img src="05-worked-examples_files/figure-html/unnamed-chunk-17-1.png" alt="" width="672" /></p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="worked-normalization-examples.html#cb116-1" tabindex="-1"></a><span class="fu">plot_density</span>(norm_counts)</span></code></pre></div>
+<p><img src="05-worked-examples_files/figure-html/unnamed-chunk-17-2.png" alt="" width="672" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="normalization-methods.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="exercises.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["bcb420_normalization.pdf", "bcb420_normalization.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section"
+  }
+});
+});
+</script>
+
+</body>
+
+</html>

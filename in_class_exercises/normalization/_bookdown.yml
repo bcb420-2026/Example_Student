@@ -1,5 +1,5 @@
 book_filename: "bcb420_normalization"
-output_dir: "docs"
+output_dir: "../../docs/normalization"
 new_session: yes
 delete_merged_file: true
 language:
