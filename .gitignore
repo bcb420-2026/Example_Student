@@ -2,3 +2,6 @@
 in_class_exercises/using_geometadb/GEOmetadb.sqlite
 in_class_exercises/using_geometadb/.DS_Store
 in_class_exercises/using_geometadb/.DS_Store
+/in_class_exercises/differential_expression/data
+/in_class_exercises/id_mapping/data
+*.rds
