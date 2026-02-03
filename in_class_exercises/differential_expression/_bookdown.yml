@@ -3,7 +3,7 @@ language:
   ui:
     chapter_name: "Chapter "
 delete_merged_file: true
-output_dir: "docs"
+output_dir: "../../docs/differential_expression"
 rmd_files:
   - "index.Rmd"
   - "D1_01-get-data.Rmd"
